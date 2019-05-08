@@ -1,0 +1,76 @@
+{% extends "layout.html" %}
+{% block content %}
+<section class="hero is-small is-info is-bold">
+    <div class="hero-body">
+        <div class="container">
+            <h1 class="title">{{ sitename }}</h1>
+            <h2 class="subtitle">The non-coder's interface to scrape historical Twitter data</h2>
+        </div>
+    </div>
+</section>
+<section class="section">
+    <div class="container">
+        <p>{{ sitename }} uses Python code that can be found <a
+                href="https://github.com/MichaelRyanSullivan/twitterscraper">here</a>!</p>
+        <p> This site fucntions exactly like <a href="https://twitter.com/search-advanced?lang=en"> Twitter's advanced
+                search </a>, but instead
+            of showing a feed of Tweets they are downloaded as a .csv file</p>
+    </div>
+</section>
+<div id="page-outer" class="container has-background-light is-fluid">
+    <section class="section">
+        <form action="#" method="post">
+            <div class="container">
+                <h1 class="header is-size-3 has-text-info">Words</h1>
+                {{text_form_field('All of these words', 'ands')}}
+                {{text_form_field('This exact phrase', 'exact')}}
+                {{text_form_field('Any of these words', 'ors')}}
+                {{text_form_field('None of these words', 'none')}}
+                {{text_form_field('These hashtags', 'hashtags')}}
+            </div>
+            <div class="container">
+                <h1 class="header is-size-3 has-text-info">People</h1>
+                {{text_form_field('From these accounts  ', 'from')}}
+                {{text_form_field('To these accounts  ', 'to')}}
+                {{text_form_field('Mentioning these accounts  ', 'mention')}}
+            </div>
+            <div class="container">
+                <h1 class="header is-size-3 has-text-info">Dates</h1>
+                <!-- <div class="field">
+                        <label class="label" for="start">Start date:</label>
+                        <input type="date" id="start" name="start">
+                </div>
+                <div class="field">
+                    <label class="label" for="end">End date:</label>
+                    <input type="date" id="end" name="end">
+                </div> -->
+                {{date_form_field('Start date:', 'start')}}
+                {{date_form_field('End date:', 'end')}}
+                {{text_form_field('Max. Tweets', 'limit')}}
+                <div class="field is-grouped">
+                    <div class="control">
+                        <button onclick="showPage();" class="button is-link" type="submit">Submit</button>
+                    </div>
+                    <div class="control">
+                        <button class="button is-text" type="reset">Cancel</button>
+                    </div>
+                </div>
+                <div id="loader" style="display: none"></div>
+            </div>
+
+        </form>
+        <div class="control">
+            <a href="/o.csv" download> DLoad</a>
+        </div>
+    </section>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <script>
+            document.getElementById("loader").style.display="none";
+            alert("worked?");
+            </script>
+        {% endif %}
+    {% endwith %}
+</div>
+
+{% endblock %}

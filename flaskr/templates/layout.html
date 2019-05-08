@@ -1,0 +1,36 @@
+{% from "macros.html" import nav_link with context %}
+{% from "macros.html" import text_form_field with context %}
+{% from "macros.html" import date_form_field with context %}
+{% set sitename = 'Twitter Scraper' %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="with=device-width, intial-scale=1">
+        <title>{{ sitename }}</title>
+
+        <link href="/static/bulma.css" rel="stylesheet">
+        <link href="/static/loader.css" rel="stylesheet">
+    </head>
+    <body>
+        <script>
+            function showPage() {
+                document.getElementById("loader").style.display="block";
+            }
+        </script>
+
+        <nav class="navbar" role="navigation" aria-label="main navigation">
+            <div class="navbar-brand">
+                <a class="navbar-item" href="/">{{ sitename }}</a>
+            </div>
+            <div class="navbar-menu is-active">
+                <div class="navbar-menu is-active">
+                    <div class="navbar-start">
+                        {{ nav_link('credits', 'Credits') }}
+                    </div>
+                </div>
+            </div>
+        </nav>
+        {% block content %} {% endblock %}
+    </body>
+</html>
