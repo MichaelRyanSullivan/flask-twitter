@@ -21,7 +21,6 @@ dash-html-components==0.13.5
 dash-renderer==0.19.0
 dash-table==3.5.0
 decorator==4.3.2
-defer==1.0.6
 distro-info==0.18
 entrypoints==0.2.3.post1
 feedparser==5.2.1
