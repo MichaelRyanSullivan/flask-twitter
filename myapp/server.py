@@ -35,10 +35,11 @@ def index():
 
     startDate = dt.date(*startList)
     endDate = dt.date(*endList)
+    limit = int(request.form['limit'])
 
     output_name = 'outputs/o.csv'
     output = query_and_output(query, output_name, begindate=startDate,
-            enddate=endDate)
+            enddate=endDate, limit=limit)
     return output
 
 
