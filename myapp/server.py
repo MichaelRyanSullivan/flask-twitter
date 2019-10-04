@@ -91,6 +91,7 @@ def query_and_output(query, output_name, limit=None,
     # perform query
     tweets = query_tweets(query, limit, begindate, enddate, poolsize, lang)
     # construct string csv
+    output = None
     if tweets:
         si = StringIO()
         cw = csv.writer(si)
@@ -101,9 +102,9 @@ def query_and_output(query, output_name, limit=None,
             tag_values = " ".join(tag_set)
             # add row for tweet in csv
             cw.writerow([x.timestamp, x.user, x.fullname, x.text, tag_values, x.id, x.url, x.retweets, x.likes, x.replies])
-    output = make_response(si.getvalue())
-    output.headers['Content-Disposition'] = 'attachment; filename=export.csv'
-    output.headers['Content-type'] = 'text/csv'
+        output = make_response(si.getvalue())
+        output.headers['Content-Disposition'] = 'attachment; filename=export.csv'
+        output.headers['Content-type'] = 'text/csv'
     return output
 
 @app.route('/credits', methods=['GET'])
