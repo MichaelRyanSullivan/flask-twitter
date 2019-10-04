@@ -7,6 +7,8 @@ import csv
 from twitterscraper import query_tweets
 from flask import send_file
 import os
+from flask import make_response
+from io import StringIO
 
 UPLOAD_FOLDER = ''
 ALLOWED_EXTENSIONS = set(['.csv'])
@@ -35,10 +37,9 @@ def index():
     endDate = dt.date(*endList)
 
     output_name = 'outputs/o.csv'
-    query_and_write(query, output_name, begindate=startDate,
+    output = query_and_output(query, output_name, begindate=startDate,
             enddate=endDate)
-    flash("done")
-    return send_file(output_name)
+    return output
 
 
 def query_from_request(request):
@@ -82,25 +83,28 @@ def query_from_request(request):
 
     return query
 
-def query_and_write(query, output_name, limit=None,
+def query_and_output(query, output_name, limit=None,
                         begindate=dt.date(2006, 3, 21),
                         enddate=dt.date.today(),
                         poolsize=20,
                         lang=''):
     # perform query
     tweets = query_tweets(query, limit, begindate, enddate, poolsize, lang)
-    # construct csv
+    # construct string csv
     if tweets:
-        with open(output_name, 'w+', encoding="utf-8") as output:
-            f = csv.writer(output)
-            f.writerow(["timestamp", "user", "fullname", "text", "hashtags", "id", "url", "retweets", "favorites", "replies"])
-            for x in tweets:
-                # parse text for hashta * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)gs
-                tag_set = set(re.findall('\#\w+', x.text))
-                tag_values = " ".join(tag_set)
-                # add row for tweet in csv
-                f.writerow([x.timestamp, x.user, x.fullname, x.text, tag_values, x.id, x.url, x.retweets, x.likes, x.replies])
-    return 
+        si = StringIO()
+        cw = csv.writer(si)
+        cw.writerow(["timestamp", "user", "fullname", "text", "hashtags", "id", "url", "retweets", "favorites", "replies"])
+        for x in tweets:
+            # parse text for hashtags
+            tag_set = set(re.findall('\#\w+', x.text))
+            tag_values = " ".join(tag_set)
+            # add row for tweet in csv
+            cw.writerow([x.timestamp, x.user, x.fullname, x.text, tag_values, x.id, x.url, x.retweets, x.likes, x.replies])
+    output = make_response(si.getvalue())
+    output.headers['Content-Disposition'] = 'attachment; filename=export.csv'
+    output.headers['Content-type'] = 'text/csv'
+    return output
 
 @app.route('/credits', methods=['GET'])
 def credits():
