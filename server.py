@@ -80,7 +80,7 @@ def query_from_request(request):
 
     return query
 
-def query_and_write(query, output_name, limit=2000,
+def query_and_write(query, output_name, limit=None,
                         begindate=dt.date(2006, 3, 21),
                         enddate=dt.date.today(),
                         poolsize=20,
