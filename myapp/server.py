@@ -6,6 +6,7 @@ import datetime as dt
 import csv
 from twitterscraper import query_tweets
 from flask import send_file
+import os
 
 UPLOAD_FOLDER = ''
 ALLOWED_EXTENSIONS = set(['.csv'])
@@ -13,6 +14,7 @@ ALLOWED_EXTENSIONS = set(['.csv'])
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
+print('HELLO\nHELLO\nHELLO\nHELLO')
 # Routes
 
 # @app.route('/submit', methods=['GET', 'POST'])
